@@ -43,7 +43,7 @@
 
                                         <input type="submit" name="submit" class="btn btn-primary btn-md" value="Entrar">
 
-                                        <input  type="button" name="submit" class="btn btn-secondary btn-md" value="Cadastre-se aqui!">
+                                        <a href="registrar.jsp" class="btn btn-secondary" role="button" >Cadastre-se aqui!</a>
 
                                     </div>
                                     <div class="text-danger text-center">

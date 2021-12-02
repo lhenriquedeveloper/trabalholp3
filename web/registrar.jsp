@@ -30,7 +30,11 @@
                         <div id="login-column" class="col-md-6">
                             <div id="login-box" class="col-md-12">
                                 <form id="login-form" class="form rounded" action="" method="post">
-                                    <h3 class="text-center text-info">Login de Usuário:</h3>
+                                    <h3 class="text-center text-info">Registrar Usuário:</h3>
+                                    <div class="form-group">
+                                        <label for="name" class="text-info">Nome:</label><br>
+                                        <input required type="text" name="txtnome" id="name" class="form-control">
+                                    </div>
                                     <div class="form-group">
                                         <label for="username" class="text-info">Usuário:</label><br>
                                         <input required type="text" name="txtusuario" id="username" class="form-control">
@@ -41,42 +45,25 @@
                                     </div>
                                     <div class="mt-4 d-flex justify-content-between">
 
-                                        <input type="submit" name="submit" class="btn btn-primary btn-md" value="Entrar">
+                                        <input type="submit" name="btn-salvar" class="btn btn-primary btn-md" value="Registrar">
 
-                                        <input  type="button" name="submit" class="btn btn-secondary btn-md" value="Cadastre-se aqui!">
+                                        <a href="index.jsp" class="btn btn-secondary" role="button" >Logue-se aqui!</a>
 
                                     </div>
                                     <div class="text-danger text-center">
                                         <%
-                                            String usuario = request.getParameter("txtusuario");
-                                            String senha = request.getParameter("txtsenha");
-                                            String nomeUsuario = "";
-                                            String user = "", pass = "";
-                                            int i = 0;
-                                            try {
+                                            if (request.getParameter("btn-salvar") != null) {
+                                                String nome = request.getParameter("txtnome");
+                                                String usuario = request.getParameter("txtusuario");
+                                                String senha = request.getParameter("txtsenha");
+
                                                 st = new Conexao().conectar().createStatement();
-                                                rs = st.executeQuery("Select *from usuarios where usuario='" + usuario + "' and senha='" + senha + "'");
-                                                while (rs.next()) {
-                                                    user = rs.getString(3);
-                                                    pass = rs.getString(4);
-                                                    nomeUsuario = rs.getString(2);
-                                                    rs.last();
-                                                }
-                                            } catch (Exception e) {
-                                                out.print(e);
-                                            }
-                                            if (usuario == null && senha == null) {
-
-                                            } else {
-
-                                                if (usuario.equals(user) && senha.equals(pass)) {
-                                                    session.setAttribute("nomeUsuario", nomeUsuario);
-
+                                                try {
+                                                    st.executeUpdate("Insert into usuarios (nome, usuario,senha) values('" + nome + "','" + usuario + "','" + senha + "')");
                                                     response.sendRedirect("usuario.jsp");
-
-                                                } else {
-                                                    out.println("Dados Incorretos");
-                                                    error = "Dados Incorretos";
+                                                } catch (Exception e) {
+                                                    out.println("Falha ao cadastrar usuário!");
+                                                    out.println(e.getMessage());
                                                 }
                                             }
                                         %>
@@ -91,4 +78,5 @@
     </body>
 </html>
 <!--Construção do código de Java-->
+
 
