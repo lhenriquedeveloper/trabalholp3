@@ -8,3 +8,4 @@ nbdist/
 .nb-gradle/
 nbproject/build-impl.xml
 nbproject/genfiles.properties
+Conexao.java
