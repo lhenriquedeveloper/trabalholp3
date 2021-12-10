@@ -38,7 +38,7 @@
                                 <a class="nav-link" href="#">Cadastro de Funcionário</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Cadastro de Estado</a>
+                                <a class="nav-link" href="estado.jsp">Cadastro de Estado</a>
                             </li>
                         </ul>
                     </div>
