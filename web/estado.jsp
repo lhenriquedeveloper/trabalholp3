@@ -35,7 +35,7 @@
                                 <a class="nav-link" href="produto.jsp">Cadastro de Produto</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Cadastro de Funcionário</a>
+                                <a class="nav-link" href="funcionario.jsp">Cadastro de Funcionário</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="estado.jsp">Cadastro de Estado</a>
@@ -144,6 +144,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <input hidden="true" value="<%=idy%>"type="text" name="txtid">
                             <label for="name" class="text-info">Nome:</label><br>
                             <input value="<%=nomey%>"type="text" name="txtnome" id="username" class="form-control">
 
@@ -184,7 +185,7 @@
     <%    if (request.getParameter("btn-editar") != null) {
             String nome = request.getParameter("txtnome");
             String sigla = request.getParameter("txtsigla");
-            String id = request.getParameter("txtcodigo");
+            String id = request.getParameter("txtid");
 
             st = new Conexao().conectar().createStatement();
             try {

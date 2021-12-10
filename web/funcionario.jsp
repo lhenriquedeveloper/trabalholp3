@@ -9,7 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script><link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
         <link href="css/usuario.css" rel="stylesheet">
         <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-        <title>Produto</title>
+        <title>The System</title>
         <!--declaração de variável-->
         <%
             Statement st = null;
@@ -32,10 +32,10 @@
                                 <a class="nav-link" href="usuario.jsp">Cadastro de Usuário</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="produto.jsp">Cadastro de Produto</a>
+                                <a class="nav-link" href="produto.jsp">Cadastro de Produto</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="funcionario.jsp">Cadastro de Funcionário</a>
+                                <a class="nav-link active" aria-current="page" href="funcionario.jsp">Cadastro de Funcionário</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="estado.jsp">Cadastro de Estado</a>
@@ -50,7 +50,7 @@
             <div class="container">
                 <div class="d-flex justify-content-between my-2">
                     <button type="button" class="btn btn-primary h-100 my-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Adicionar Produto
+                        Adicionar Funcionário
                     </button>
 
 
@@ -66,8 +66,10 @@
                     <thead>
                         <tr>
                             <th scope="col">Nome</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Quantidade</th>
+                            <th scope="col">Endereço</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Função</th>
+                            <th scope="col">Salário</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -78,9 +80,9 @@
                                 st = new Conexao().conectar().createStatement();
                                 if (request.getParameter("btn-buscar") != null) {
                                     String buscar = '%' + request.getParameter("txtbuscar") + '%';
-                                    rs = st.executeQuery("Select *from produto where nome like '" + buscar + "'");
+                                    rs = st.executeQuery("Select *from funcionario where nome like '" + buscar + "'");
                                 } else {
-                                    rs = st.executeQuery("Select *from produto"); //preencher tabela
+                                    rs = st.executeQuery("Select *from funcionario"); //preencher tabela
                                 }
                                 while (rs.next()) {
 
@@ -89,11 +91,13 @@
                         <tr>
                             <td><%= rs.getString(2)%></td>
                             <td><%= rs.getString(3)%></td>
-                            <td> <%= rs.getString(4)%></td>
+                            <td><%= rs.getString(4)%></td>
+                            <td><%= rs.getString(5)%></td>
+                            <td><%= rs.getString(6)%></td>
                             <td>
-                                <a href="produto.jsp?funcao=editar&id=<%= rs.getString(1)%>"class="text-info" ><i class="fas fa-pencil-alt"></i>
+                                <a href="funcionario.jsp?funcao=editar&id=<%= rs.getString(1)%>"class="text-info" ><i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a href="produto.jsp?funcao=excluir&id=<%= rs.getString(1)%>"class="text-danger"><i class="fas fa-user-times"></i></a>
+                                <a href="funcionario.jsp?funcao=excluir&id=<%= rs.getString(1)%>"class="text-danger"><i class="fas fa-user-times"></i></a>
                             </td>
                         </tr>
                         <%   }
@@ -105,7 +109,7 @@
                 </table>
             </div>
         </main>
-        <!-- Modal - Formulário para cadastro de Produto -->
+        <!-- Modal - Formulário para cadastro de Funcionário -->
         <form>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -117,27 +121,30 @@
                                 String btn = "";
                                 String idy = "";
                                 String nomey = "";
-                                String valory = "";
-                                String quantidadey = "";
+                                String enderecoy = "";
+                                String bairroy = "";
+                                String funcaoy = "";
+                                String salarioy = "";
                                 if (request.getParameter("funcao") != null && request.getParameter("funcao").equals("editar")) {
-                                    titulo = "Editar Produto";
+                                    titulo = "Editar Usuário";
                                     btn = "btn-editar";
                                     idy = request.getParameter("id");
                                     try {
                                         st = new Conexao().conectar().createStatement();
-                                        rs = st.executeQuery("SELECT * FROM produto where id = '" + idy + "' ");
+                                        rs = st.executeQuery("SELECT * FROM funcionario where id = '" + idy + "' ");
                                         while (rs.next()) {
                                             nomey = rs.getString(2);
-                                            valory = rs.getString(3);
-                                            quantidadey = rs.getString(4);
-
+                                            enderecoy = rs.getString(3);
+                                            bairroy = rs.getString(4);
+                                            funcaoy = rs.getString(5);
+                                            salarioy = rs.getString(6);
                                         }
                                     } catch (Exception e) {
                                         out.print(e);
                                     }
 
                                 } else {
-                                    titulo = "Inserir Produto";
+                                    titulo = "Inserir Funcionário";
                                     btn = "btn-salvar";
                                 }
                             %>
@@ -150,14 +157,21 @@
                         </div>
                         <div class="modal-body">
                             <input hidden="true" value="<%=idy%>"type="text" name="txtid">
+                            
                             <label for="name" class="text-info">Nome:</label><br>
                             <input value="<%=nomey%>"type="text" name="txtnome" id="username" class="form-control">
 
-                            <label for="valor" class="text-info">Valor:</label><br>
-                            <input value="<%=valory%>" type="text" name="txtvalor" id="username" class="form-control">
+                            <label for="endereco" class="text-info">Endereço:</label><br>
+                            <input value="<%=enderecoy%>" type="text" name="txtendereco" id="username" class="form-control">
 
-                            <label for="quantidade" class="text-info">Quantidade:</label><br>
-                            <input value="<%=quantidadey%>" type="text" name="txtquantidade" id="username" class="form-control">
+                            <label for="bairro" class="text-info">Bairro:</label><br>
+                            <input value="<%=bairroy%>" type="text" name="txtbairro" id="username" class="form-control">
+                            
+                            <label for="funcao" class="text-info">Função:</label><br>
+                            <input value="<%=funcaoy%>" type="text" name="txtfuncao" id="username" class="form-control">
+
+                            <label for="salario" class="text-info">Salário:</label><br>
+                            <input value="<%=salarioy%>" type="text" name="txtsalario" id="username" class="form-control">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -177,13 +191,15 @@
     <!--Método para salvar o dados-->
     <%    if (request.getParameter("btn-salvar") != null) {
             String nome = request.getParameter("txtnome");
-            String valor = request.getParameter("txtvalor");
-            String quantidade = request.getParameter("txtquantidade");
+            String endereco = request.getParameter("txtendereco");
+            String bairro = request.getParameter("txtbairro");
+            String funcao = request.getParameter("txtfuncao");
+            String salario = request.getParameter("txtsalario");
 
             st = new Conexao().conectar().createStatement();
             try {
-                st.executeUpdate("Insert into produto (nomeProduto, Valor, Quantidade) values('" + nome + "','" + valor + "','" + quantidade + "')");
-                response.sendRedirect("produto.jsp");
+                st.executeUpdate("Insert into funcionario (nome, endereco, Bairro, Funcao, Salario) values('" + nome + "','" + endereco + "','" + bairro + "','" + funcao + "','" + salario + "')");
+                response.sendRedirect("funcionario.jsp");
 
             } catch (Exception e) {
             }
@@ -193,16 +209,19 @@
 
     <!--Método para atualização do dados-->
     <%    if (request.getParameter("btn-editar") != null) {
+            
             String nome = request.getParameter("txtnome");
-            String valor = request.getParameter("txtvalor");
-            String quantidade = request.getParameter("txtquantidade");
+            String endereco = request.getParameter("txtendereco");
+            String bairro = request.getParameter("txtbairro");
+            String funcao = request.getParameter("txtfuncao");
+            String salario = request.getParameter("txtsalario");
             String id = request.getParameter("txtid");
 
             st = new Conexao().conectar().createStatement();
             try {
 
-                st.executeUpdate("update produto set nomeProduto= '" + nome + "', Valor= '" + valor + "',Quantidade='" + quantidade + "'where id='" + id + "'");
-                response.sendRedirect("produto.jsp");
+                st.executeUpdate("update funcionario set nome= '" + nome + "', endereco= '" + endereco + "',Bairro='" + bairro + "',Funcao='" + funcao + "',Salario='" + salario + "'where id='" + id + "'");
+                response.sendRedirect("funcionario.jsp");
             } catch (Exception e) {
             }
 
@@ -218,8 +237,8 @@
 
                 st = new Conexao().conectar().createStatement();
 
-                st.executeUpdate("delete from produto where id = '" + id + "'");
-                response.sendRedirect("produto.jsp");
+                st.executeUpdate("delete from funcionario where id = '" + id + "'");
+                response.sendRedirect("funcionario.jsp");
 
             } catch (Exception e) {
                 out.print(e);
